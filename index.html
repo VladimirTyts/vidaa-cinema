@@ -1,1 +1,79 @@
-<!doctype html><html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>VIDAA Cinema</title><style>*{box-sizing:border-box}body{margin:0;background:#0b1020;color:#f5f7ff;font:24px Arial,sans-serif}main{max-width:1250px;margin:auto;padding:5vw}h1{font-size:54px;margin:10px 0}p{color:#b6c1d6;line-height:1.5}button,a.action{display:inline-block;background:#6545e9;color:white;border:3px solid transparent;border-radius:15px;padding:19px 26px;margin:8px 8px 8px 0;font:inherit;text-decoration:none;cursor:pointer}button:focus,a:focus,input:focus{outline:5px solid #fbc74b}input{background:#1c2640;color:white;border:2px solid #58627b;border-radius:10px;padding:18px;width:100%;font:inherit}video{width:100%;max-height:60vh;background:black;margin-top:16px}.panel{background:#151e34;padding:24px;border-radius:20px;margin-top:24px}.small{font-size:17px}#status{color:#81e7b0}</style></head><body><main><p>HISENSE · VIDAA · GITHUB PAGES</p><h1>Мой кинотеатр</h1><p>Веб-лаунчер и HLS-плеер для разрешённых потоков. Без обхода DRM и региональных ограничений.</p><a class="action" href="https://okko.tv/">Открыть официальный Okko</a><div class="panel"><h2>HLS-плеер</h2><p class="small">Вставьте прямую ссылку на разрешённый HTTPS HLS-плейлист (.m3u8). Ссылка должна разрешать воспроизведение на другом домене.</p><input id="url" type="url" placeholder="https://example.com/video/playlist.m3u8" aria-label="HLS URL"><button id="play">Воспроизвести HLS</button><button id="stop">Остановить</button><p id="status" role="status">Готов к проверке.</p><video id="video" controls playsinline></video></div><p class="small">Управление: стрелки пульта, OK/Enter. Если видео не воспроизводится, проверьте поддержку кодека, CORS и права доступа. Защищённые потоки Okko сюда не вставляются.</p></main><script>(function(){var v=document.getElementById('video'),u=document.getElementById('url'),s=document.getElementById('status');document.getElementById('play').onclick=function(){var x=u.value.trim();if(!/^https:\/\//i.test(x)){s.textContent='Нужна прямая HTTPS-ссылка на HLS-плейлист.';return}v.pause();v.src=x;v.load();var p=v.play();if(p&&p.catch)p.catch(function(e){s.textContent='Ошибка запуска: '+e.message});s.textContent='Загрузка потока…'};document.getElementById('stop').onclick=function(){v.pause();v.removeAttribute('src');v.load();s.textContent='Остановлено.'};v.onplaying=function(){s.textContent='Воспроизведение запущено.'};v.onerror=function(){s.textContent='Ошибка медиа: кодек, сеть, CORS или недоступный поток.'}})();</script></body></html>
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>VIDAA Cinema · HLS</title>
+<style>
+*{box-sizing:border-box}html{background:#0b1020}body{margin:0;color:#f5f7ff;font:22px Arial,Helvetica,sans-serif}main{max-width:1160px;margin:auto;padding:36px 5vw 70px}h1{font-size:clamp(34px,5vw,58px);margin:8px 0 14px}h2{font-size:30px;margin:0 0 14px}p{color:#b8c4dc;line-height:1.5}.eyebrow{font-size:16px;letter-spacing:.12em;color:#9eabcc}.panel{background:#151e34;padding:26px;border-radius:18px;margin-top:24px}.actions{display:flex;flex-wrap:wrap;gap:12px;margin:18px 0}button,.action{display:inline-block;border:2px solid transparent;background:#6545e9;color:#fff;border-radius:12px;padding:17px 23px;font:inherit;cursor:pointer;text-decoration:none}.secondary{background:#34405b}button:focus,.action:focus,input:focus{outline:5px solid #ffcb4c;outline-offset:2px}input{width:100%;background:#1c2640;border:2px solid #62718e;border-radius:10px;color:#fff;padding:16px;font:inherit}video{width:100%;max-height:60vh;background:#000;margin-top:12px;border-radius:8px}.small{font-size:16px}#status{color:#94e7b6;white-space:pre-wrap;overflow-wrap:anywhere}#status.error{color:#ffadad}#details{font-size:15px;color:#aebbd3;white-space:pre-wrap;overflow-wrap:anywhere}code{font-size:.88em}a{color:#b8c9ff}
+</style>
+</head>
+<body><main>
+<div class="eyebrow">HISENSE · VIDAA · GITHUB PAGES</div>
+<h1>Мой кинотеатр</h1>
+<p>HLS-плеер для открытых и разрешённых потоков. Проверка совместимости Chrome и VIDAA без обхода DRM.</p>
+<div class="actions"><a class="action" href="https://okko.tv/" target="_self">Открыть официальный Okko</a></div>
+<section class="panel" aria-label="HLS player">
+<h2>HLS-плеер</h2>
+<p class="small">Нажми «Тестовое видео» для запуска публичного HLS-потока. Для другого потока вставь прямую HTTPS-ссылку на плейлист .m3u8.</p>
+<input id="url" type="url" aria-label="HLS URL" placeholder="https://example.com/playlist.m3u8" value="https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8">
+<div class="actions">
+<button id="test">Тестовое видео</button>
+<button id="play">Воспроизвести URL</button>
+<button id="stop" class="secondary">Остановить</button>
+</div>
+<p id="status" role="status">Готов к проверке.</p>
+<video id="video" controls playsinline preload="none"></video>
+<details style="margin-top:18px"><summary tabindex="0">Техническая диагностика</summary><p id="details"></p></details>
+</section>
+<p class="small">Для управления используй стрелки пульта и OK/Enter. Chrome обычно требует hls.js; телевизор может воспроизводить HLS нативно. Наличие HLS не гарантирует поддержку защищённого контента Okko.</p>
+</main>
+<script>
+(function(){
+'use strict';
+var TEST='https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8';
+var v=document.getElementById('video'),input=document.getElementById('url'),status=document.getElementById('status'),details=document.getElementById('details');
+var hls=null,session=0,scriptLoading=false,scriptCallbacks=[];
+function report(msg,isError){status.textContent=msg;status.className=isError?'error':'';}
+function info(msg){details.textContent=msg;}
+function cleanup(){session++;v.pause();if(hls){try{hls.destroy();}catch(e){}hls=null;}v.removeAttribute('src');try{v.load();}catch(e){}}
+function attemptPlay(id){if(id!==session)return;var p;try{p=v.play();}catch(e){report('Не удалось начать воспроизведение: '+e.message,true);return;}if(p&&typeof p.catch==='function'){p.catch(function(e){if(id===session)report('Браузер не начал воспроизведение: '+e.message+'. Попробуй кнопку Play на видео.',true);});}}
+function loadHlsJs(callback){
+ if(window.Hls){callback(true);return;}
+ scriptCallbacks.push(callback);
+ if(scriptLoading)return;
+ scriptLoading=true;
+ var s=document.createElement('script');s.src='https://cdn.jsdelivr.net/npm/hls.js@1.6.15/dist/hls.min.js';s.async=true;
+ function finish(ok){scriptLoading=false;var c=scriptCallbacks.slice();scriptCallbacks=[];for(var i=0;i<c.length;i++)c[i](ok);}
+ s.onload=function(){finish(!!window.Hls)};s.onerror=function(){finish(false)};document.head.appendChild(s);
+}
+function start(url){
+ if(!/^https:\/\/\S+$/i.test(url)){report('Нужна корректная HTTPS-ссылка на HLS-плейлист.',true);return;}
+ cleanup();var id=session;
+ info('Источник: '+url+'\nUser-Agent: '+navigator.userAgent+'\nНативный HLS: '+(v.canPlayType('application/vnd.apple.mpegurl')||'нет')+'\nMediaSource: '+(!!window.MediaSource));
+ var nativeHls=v.canPlayType('application/vnd.apple.mpegurl')||v.canPlayType('application/x-mpegURL');
+ if(nativeHls){
+   report('Нативный HLS обнаружен. Загружаем видео…');
+   v.src=url;v.load();attemptPlay(id);return;
+ }
+ report('Нативного HLS нет. Подключаем hls.js…');
+ loadHlsJs(function(ok){
+  if(id!==session)return;
+  if(!ok||!window.Hls||!window.Hls.isSupported()){report('HLS недоступен: нет нативной поддержки и hls.js не поддерживается или не загрузился. Проверь подключение к CDN.',true);return;}
+  try{
+   hls=new window.Hls({enableWorker:true});
+   hls.on(window.Hls.Events.ERROR,function(event,data){if(id!==session)return;var desc='hls.js: '+data.type+' / '+data.details+(data.response&&data.response.code?' (HTTP '+data.response.code+')':'');info(details.textContent+'\n'+desc);if(data.fatal){report('Ошибка HLS: '+desc+'. Проверь CORS, сеть и кодеки.',true);}});
+   hls.on(window.Hls.Events.MANIFEST_PARSED,function(){if(id===session){report('HLS-манифест загружен. Запускаем видео…');attemptPlay(id);}});
+   hls.attachMedia(v);hls.on(window.Hls.Events.MEDIA_ATTACHED,function(){if(id===session)hls.loadSource(url);});
+  }catch(e){report('Ошибка инициализации hls.js: '+e.message,true);}
+ });
+}
+document.getElementById('test').onclick=function(){input.value=TEST;start(TEST)};
+document.getElementById('play').onclick=function(){start(input.value.trim())};
+document.getElementById('stop').onclick=function(){cleanup();report('Воспроизведение остановлено.')};
+v.addEventListener('playing',function(){report('Видео воспроизводится.')});
+v.addEventListener('error',function(){if(v.error)report('Ошибка HTML5 video (код '+v.error.code+'). Возможны проблемы с форматом, кодеком или сетью.',true)});
+info('Нативный HLS: '+(v.canPlayType('application/vnd.apple.mpegurl')||'нет')+'\nMediaSource: '+(!!window.MediaSource)+'\nUser-Agent: '+navigator.userAgent);
+})();
+</script>
+</body></html>
